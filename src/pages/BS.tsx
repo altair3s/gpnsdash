@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect} from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import MapWrapper from './MapWrapper';
 
@@ -87,7 +87,7 @@ const BS: React.FC = () => {
     // Convertir les heures en minutes
     const parseTime = (timeStr: string): number => {
       const [hours, minutes, seconds = '0'] = timeStr.split(':').map(Number);
-      return hours * 60 + minutes + seconds / 60;
+      return hours * 60 + minutes + (Number(seconds) / 60);
     };
     
     const startMinutes = parseTime(startTime);
@@ -522,11 +522,11 @@ const BS: React.FC = () => {
   };
 
   // Créer un objet avec les props à passer à MapWrapper
-  const mapProps = {
-    prestations: filteredPrestations,
-    center: mapCenter,
-    zoom: mapZoom
-  };
+ // const mapProps = {
+   // prestations: filteredPrestations,
+    //center: mapCenter,
+    //zoom: mapZoom
+  //};
 
   if (isLoading) return (
     <div className="loading-container" style={{ 

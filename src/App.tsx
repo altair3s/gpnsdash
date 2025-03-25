@@ -1,14 +1,14 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
+//import Box from '@mui/material/Box';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
-import RH from './pages/rh';
-import Materiel from './pages/Materiel';
-import ComptesRendus from './pages/ComptesRendus';
-import StockProduits from './pages/StockProduits';
-import BlocsSanitaires from './pages/BlocsSanitaires';
+//import RH from './pages/rh';
+//import Materiel from './pages/Materiel';
+//import ComptesRendus from './pages/ComptesRendus';
+//import StockProduits from './pages/StockProduits';
+//import BlocsSanitaires from './pages/BlocsSanitaires';
 import Layout from './components/Layout';
 import Heures from './pages/rh/Heures';
 import Absences from './pages/rh/Absences';
@@ -21,7 +21,7 @@ import Vacation from './pages/cr/Vacation';
 import RemiseEtat from './pages/cr/RemiseEtat';
 import Stock from './pages/Stock';
 import BS from './pages/BS';
-import PlanGen from './pages/PlanGen'
+
 
 const theme = createTheme({
   palette: {
@@ -105,7 +105,6 @@ function App() {
                     <Route path="/cr/remiseetat" element={<RemiseEtat />} />
                     <Route path="/stock" element={<Stock />} />
                     <Route path="/bs" element={<BS />} />
-                    <Route path="/plangen" element={<PlanGen />} />
                     <Route path="*" element={<Navigate to="/dashboard" replace />} />
                   </Routes>
                 </Layout>

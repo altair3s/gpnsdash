@@ -21,15 +21,15 @@ import {
   Collapse,
 } from '@mui/material';
 import {
-  Menu as MenuIcon,
+  //Menu as MenuIcon,
   Dashboard as DashboardIcon,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
-  Assessment as AssessmentIcon,
-  Notifications as NotificationsIcon,
+  //Assessment as AssessmentIcon,
+  //Notifications as NotificationsIcon,
   Settings as SettingsIcon,
   Person as PersonIcon,
-  Analytics as AnalyticsIcon,
+  //Analytics as AnalyticsIcon,
   Logout as LogoutIcon,
   ExpandLess,
   ExpandMore,
@@ -38,8 +38,7 @@ import {
   Description as DescriptionIcon,
   Inventory as InventoryIcon,
   Wc as WcIcon,
-  CalendarMonth as CalendarMonthIcon
-} from '@mui/icons-material';
+ } from '@mui/icons-material';
 
 const drawerWidth = 240;
 const collapsedDrawerWidth = 65;
@@ -114,10 +113,9 @@ export default function Layout({ children }: LayoutProps) {
     },
     { text: 'Stock Produits', icon: <InventoryIcon />, path: '/stock' },
     { text: 'Blocs Sanitaires', icon: <WcIcon />, path: '/bs' },
-    { text: 'Générateur de Planning', icon: <CalendarMonthIcon />, path: '/plangen' },
   ];
 
-  const renderMenuItem = (item: any, index: number) => {
+  const renderMenuItem = (item: any, _index: number) => {
     if (item.submenu) {
       return (
         <Box key={item.text}>

@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, Typography, Paper, Grid, CircularProgress, Alert } from '@mui/material';
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../../src/styles/datepicker.css";
-import { FaCalendarAlt, FaUserClock, FaBed, FaMedkit } from 'react-icons/fa';
+import { FaCalendarAlt} from 'react-icons/fa';
 import { TbSum } from "react-icons/tb";
 import { FaRunning } from "react-icons/fa";
 import { FaQuestion } from "react-icons/fa";
@@ -124,17 +124,17 @@ export default function Absences() {
     setFilteredData(filtered);
   };
 
-  const totalHrsTravail = filteredData.reduce((sum, day) => sum + (day['ttl hrs'] || 0), 0);
-  const totalAbsInj = filteredData.reduce((sum, day) => sum + (day['hrs abi'] || 0), 0);
-  const totalRetards = filteredData.reduce((sum, day) => sum + (day['hrs ar'] || 0), 0);
-  const totalMaladies = filteredData.reduce((sum, day) => sum + (day['hrs mal'] || 0), 0);
-  const totalCP = filteredData.reduce((sum, day) => sum + (day['hrs cp'] || 0), 0);
+  const totalHrsTravail = filteredData.reduce((sum, day) => sum + (Number(day['ttl hrs']) || 0), 0);
+  const totalAbsInj = filteredData.reduce((sum, day) => sum + (Number(day['hrs abi']) || 0), 0);
+  const totalRetards = filteredData.reduce((sum, day) => sum + (Number(day['hrs ar']) || 0), 0);
+  const totalMaladies = filteredData.reduce((sum, day) => sum + (Number(day['hrs mal']) || 0), 0);
+  const totalCP = filteredData.reduce((sum, day) => sum + (Number(day['hrs cp']) || 0), 0);
   const totalGlobal = totalAbsInj + totalCP + totalMaladies;
   const totalAbsenteisme = (totalGlobal / (totalHrsTravail)) * 100;
-  const joursMl = filteredData.reduce((sum, day) => sum + (day['nb mal'] || 0), 0);
-  const joursCp = filteredData.reduce((sum, day) => sum + (day['nb cp'] || 0), 0);
-  const joursAr = filteredData.reduce((sum, day) => sum + (day['nb ar'] || 0), 0);
-  const joursAbsInj = filteredData.reduce((sum, day) => sum + (day['nb abi'] || 0), 0);
+  const joursMl = filteredData.reduce((sum, day) => sum + (Number(day['nb mal']) || 0), 0);
+  const joursCp = filteredData.reduce((sum, day) => sum + (Number(day['nb cp']) || 0), 0);
+  const joursAr = filteredData.reduce((sum, day) => sum + (Number(day['nb ar']) || 0), 0);
+  const joursAbsInj = filteredData.reduce((sum, day) => sum + (Number(day['nb abi']) || 0), 0);
   const joursGlobal = joursAbsInj + joursCp + joursMl + joursAr;
   
 
@@ -316,7 +316,7 @@ export default function Absences() {
                       fill="#8884d8"
                       dataKey="value"
                     >
-                      {prepareAbsenceTypeData().map((entry, index) => (
+                      {prepareAbsenceTypeData().map((_entry, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import {useState, useEffect } from 'react';
 import { Box, Typography, Paper, Grid, CircularProgress, Alert, Chip } from '@mui/material';
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid} from 'recharts';
 import DatePicker from "react-datepicker";
@@ -6,6 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../../../src/styles/datepicker.css";
 import { FaClock, FaPeopleArrows, FaCloudMoon, FaBalanceScaleLeft } from 'react-icons/fa';
 import ReactEcharts from 'echarts-for-react';
+import { EChartsOption} from 'echarts';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#ec407a'];
 
@@ -151,12 +152,123 @@ export default function Heures() {
   //const totalHrs = totalhrs;
   const totalHrsInt = filteredData.reduce((sum, day) => sum + (day['interim'] || 0), 0);
   const totalHrsNuits = filteredData.reduce((sum, day) => sum + (day['nuit'] || 0), 0);
-  const totalHrsCDI = totalHrs - totalHrsInt 
+  //const totalHrsCDI = totalHrs - totalHrsInt 
   const eqtp = calculateEQTP(totalHrs);
   const pctHrsInt = calculpctHInt(totalHrs, totalHrsInt);
   const pctHrsCdi = calculpctHCdi(totalHrs, totalHrsInt);
   const pctHrsNuits = calculpctHNuits(totalHrs, totalHrsNuits);
   const pctObjectif = ((totalHrs/objectifHrs)*100);
+
+  const gaugeOption: EChartsOption = {
+    backgroundColor: 'transparent',
+    grid: {
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0
+    },
+    series: [{
+      type: 'gauge',
+      radius: '85%',
+      startAngle: 200,
+      endAngle: -20,
+      min: 0,
+      max: objectifHrs * 1.3, // Légèrement plus grand que l'objectif
+      splitNumber: 8,
+      center: ['50%', '60%'],
+      progress: {
+        show: true,
+        width: 30,
+        roundCap: true,
+        clip: false
+      },
+      pointer: {
+        show: true,
+        icon: 'path://M2.9,0.7L2.9,0.7c1.4,0,2.6,1.2,2.6,2.6v115c0,1.4-1.2,2.6-2.6,2.6l0,0c-1.4,0-2.6-1.2-2.6-2.6V3.3C0.3,1.9,1.4,0.7,2.9,0.7z',
+        length: '75%',
+        width: 8,
+        offsetCenter: [0, 0],
+        itemStyle: {
+          color: '#b81c25',
+          shadowColor: 'rgba(0, 0, 0, 0.5)',
+          shadowBlur: 5,
+          shadowOffsetX: 2,
+          shadowOffsetY: 2
+        }
+      },
+      animation: true,
+      animationDurationUpdate: 5000,
+      animationEasingUpdate: 'bounceOut',
+      axisLine: {
+        lineStyle: {
+          width: 10,
+          color: [
+            [0.3, '#91cc75'],
+            [0.7, '#FFBB28'],
+            [1, '#FF8042']
+          ]
+        }
+      },
+      axisTick: {
+        show: true,
+        distance: -40,
+        length: 8,
+        lineStyle: {
+          width: 2,
+          color: '#666'
+        }
+      },
+      splitLine: {
+        show: true,
+        distance: -40,
+        length: 15,
+        lineStyle: {
+          width: 3,
+          color: '#333'
+        }
+      },
+      axisLabel: {
+        show: true,
+        distance: -15,
+        color: '#333',
+        fontSize: 12,
+        fontWeight: 'bold',
+        formatter: function(value) {
+          // Modifier pour retourner une chaîne au lieu d'un nombre
+          return value.toString();
+        }
+      },
+      anchor: {
+        show: true,
+        size: 15,
+        showAbove: true,
+        itemStyle: {
+          color: '#030303',
+          borderColor: '#eee',
+          borderWidth: 2
+        }
+      },
+      detail: {
+        valueAnimation: true,
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#333',
+        offsetCenter: [0, '85%'],
+        formatter: function(value) {
+          return value.toFixed(0) + ' h';
+        }
+      },
+      title: {
+        show: false
+      },
+      data: [{
+        value: totalHrs,
+        name: 'Progression',
+      }],
+      animationDuration: 5000,
+      animationEasing: 'cubicInOut'
+    }]
+  };
 
   return (
     <Box sx={{ p: 3 }}>
@@ -230,206 +342,60 @@ export default function Heures() {
     </Box>
     
     <Box sx={{ position: 'relative', height: '380px' }}>
-                <ReactEcharts 
-                  option={{
-                    backgroundColor: 'transparent',
-                    grid: {
-                      top: 0,
-                      bottom: 0,
-                      left: 0,
-                      right: 0
-                    },
-                    series: [{
-                      type: 'gauge',
-                      radius: '85%',
-                      startAngle: 200,
-                      endAngle: -20,
-                      min: 0,
-                      max: objectifHrs * 1.3, // Légèrement plus grand que l'objectif
-                      splitNumber: 8,
-                      center: ['50%', '60%'],
-                      progress: {
-                        show: true,
-                        width: 30,
-                        roundCap: true,
-                        clip: false
-                      },
-                      pointer: {
-                        show: true,
-                        icon: 'path://M2.9,0.7L2.9,0.7c1.4,0,2.6,1.2,2.6,2.6v115c0,1.4-1.2,2.6-2.6,2.6l0,0c-1.4,0-2.6-1.2-2.6-2.6V3.3C0.3,1.9,1.4,0.7,2.9,0.7z',
-                        length: '75%',
-                        width: 8,
-                        offsetCenter: [0, 0],
-                        itemStyle: {
-                          color: '#b81c25',
-                          shadowColor: 'rgba(0, 0, 0, 0.5)',
-                          shadowBlur: 5,
-                          shadowOffsetX: 2,
-                          shadowOffsetY: 2
-                        }
-                      },
-                      animation: true,
-                      animationDurationUpdate: 5000,
-                      animationEasingUpdate: 'bounceOut',
-                      axisLine: {
-                        lineStyle: {
-                          width: 30,
-                          color: [
-                            [3000 / (objectifHrs * 1.3), { // 0 à 3000 est vert
-                              type: 'linear',
-                              x: 0,
-                              y: 0,
-                              x2: 1,
-                              y2: 0,
-                              colorStops: [{
-                                offset: 0,
-                                color: '#00C49F' // Plus clair
-                              }, {
-                                offset: 1,
-                                color: '#07A78A' // Plus foncé
-                              }]
-                            }],
-                            [3200 / (objectifHrs * 1.25), { // 3000 à 3200 est jaune
-                              type: 'linear',
-                              x: 0,
-                              y: 0,
-                              x2: 1,
-                              y2: 0,
-                              colorStops: [{
-                                offset: 0,
-                                color: '#FFBB28' // Plus clair
-                              }, {
-                                offset: 1,
-                                color: '#E7A100' // Plus foncé
-                              }]
-                            }],
-                            [1, { // Au-dessus de 3200 est orange
-                              type: 'linear',
-                              x: 0,
-                              y: 0,
-                              x2: 1,
-                              y2: 0,
-                              colorStops: [{
-                                offset: 0,
-                                color: '#FF8042' // Plus clair
-                              }, {
-                                offset: 1,
-                                color: '#E7632B' // Plus foncé
-                              }]
-                            }]
-                          ]
-                        }
-                      },
-                      axisTick: {
-                        show: true,
-                        distance: -40,
-                        length: 8,
-                        lineStyle: {
-                          width: 2,
-                          color: '#666'
-                        }
-                      },
-                      splitLine: {
-                        show: true,
-                        distance: -40,
-                        length: 15,
-                        lineStyle: {
-                          width: 3,
-                          color: '#333'
-                        }
-                      },
-                      axisLabel: {
-                        show: true,
-                        distance: -15,
-                        color: '#333',
-                        fontSize: 12,
-                        fontWeight: 'bold',
-                        formatter: function(value) {
-                          return value;
-                        }
-                      },
-                      anchor: {
-                        show: true,
-                        size: 15,
-                        showAbove: true,
-                        itemStyle: {
-                          color: '#030303',
-                          borderColor: '#eee',
-                          borderWidth: 2
-                        }
-                      },
-                      detail: {
-                        valueAnimation: true,
-                        fontSize: 24,
-                        fontWeight: 'bold',
-                        color: '#333',
-                        offsetCenter: [0, '85%'],
-                        formatter: function(value) {
-                          return value.toFixed(0) + ' h';
-                        }
-                      },
-                      title: {
-                        show: false
-                      },
-                      data: [{
-                        value: totalHrs,
-                        name: 'Progression',
-                      }],
-                      animationDuration: 5000,
-                      animationEasing: 'cubicInOut'
-                    }]
-                  }}
-                  style={{ height: '100%', width: '100%' }}
-                />
-                
-                {/* Pourcentage au centre */}
-                <Box sx={{ 
-                  position: 'absolute', 
-                  top: '75%', 
-                  left: '50%', 
-                  transform: 'translate(-50%, -50%)',
-                  textAlign: 'center',
-                  width: '100%',
-                  pointerEvents: 'none'
-                }}>
-                  <Typography 
-                    variant="body1" 
-                    color="textSecondary" 
-                    fontWeight="500"
-                    sx={{ opacity: 0.8 }}
-                  >
-                  {pctObjectif < 100 ? "Progression" : "Objectif atteint !"}
-                  </Typography>
-                  <Box 
-                    sx={{ 
-                      display: 'flex', 
-                      justifyContent: 'center', 
-                      alignItems: 'baseline',
-                      mt: 1
-                    }}
-                  >
-                    <Typography 
-                      variant="h4" 
-                      fontWeight="700" 
-                      color={
-                        pctObjectif < 90 ? '#00C49F' : 
-                        pctObjectif < 99 ? '#FFBB28' : 
-                        '#FF8042'
-                      }
-                    >
-                      {pctObjectif.toFixed(0)}
-                    </Typography>
-                    <Typography 
-                      variant="h5" 
-                      fontWeight="500" 
-                      color="textSecondary"
-                      sx={{ ml: 0.5, opacity: 0.8 }}
-                    >
-                      %
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
+    <ReactEcharts 
+      option={gaugeOption}
+      style={{ height: '100%', width: '100%' }}
+    />
+    
+    {/* Pourcentage au centre */}
+    <Box sx={{ 
+      position: 'absolute', 
+      top: '75%', 
+      left: '50%', 
+      transform: 'translate(-50%, -50%)',
+      textAlign: 'center',
+      width: '100%',
+      pointerEvents: 'none'
+    }}>
+      <Typography 
+        variant="body1" 
+        color="textSecondary" 
+        fontWeight="500"
+        sx={{ opacity: 0.8 }}
+      >
+      {pctObjectif < 100 ? "Progression" : "Objectif atteint !"}
+      </Typography>
+      <Box 
+        sx={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'baseline',
+          mt: 1
+        }}
+      >
+        <Typography 
+          variant="h4" 
+          fontWeight="700" 
+          color={
+            pctObjectif < 90 ? '#00C49F' : 
+            pctObjectif < 99 ? '#FFBB28' : 
+            '#FF8042'
+          }
+        >
+          {pctObjectif.toFixed(0)}
+        </Typography>
+        <Typography 
+          variant="h5" 
+          fontWeight="500" 
+          color="textSecondary"
+          sx={{ ml: 0.5, opacity: 0.8 }}
+        >
+          %
+        </Typography>
+      </Box>
+    </Box>
+  </Box>
+
   </Paper>
 </Grid>
 
@@ -719,7 +685,7 @@ export default function Heures() {
                         border: 'none',
                         padding: '12px' 
                       }}
-                      formatter={(value) => [`${value.toFixed(2)} heures`, undefined]}
+                      formatter={(value) => [`${value} heures`, undefined]}
                       labelFormatter={(label) => `Date: ${label}`}
                       cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }}
                     />
@@ -730,7 +696,7 @@ export default function Heures() {
                       wrapperStyle={{
                         paddingBottom: '16px',
                       }}
-                      formatter={(value, entry) => (
+                      formatter={(value) => (
                         <span style={{ color: '#666', fontWeight: 500, marginRight: '30px' }}>
                           {value}
                         </span>
@@ -824,7 +790,7 @@ export default function Heures() {
                       paddingAngle={2}
                       cornerRadius={5}
                     >
-                      {prepareQualificationData().map((entry, index) => (
+                      {prepareQualificationData().map((_entry, index) => (
                         <Cell 
                           key={`cell-${index}`} 
                           fill={COLORS[index % COLORS.length]} 
@@ -840,7 +806,7 @@ export default function Heures() {
                         border: 'none',
                         padding: '12px' 
                       }}
-                      formatter={(value, name) => [`${value.toFixed(0)} heures`, name]}
+                      formatter={(value, name) => [`${value} heures`, name]}
                       separator=": "
                     />
                     <Legend 
@@ -918,7 +884,7 @@ export default function Heures() {
                       cx="50%"
                       cy="50%"
                       labelLine={false}
-                      label={({ name, value, percent }) => `${value.toFixed(0)}h (${(percent * 100).toFixed(0)}%)`}
+                      label={({value, percent }) => `${value.toFixed(0)}h (${(percent * 100).toFixed(0)}%)`}
                       outerRadius={120}
                       innerRadius={80}
                       fill="#8884d8"
@@ -953,7 +919,7 @@ export default function Heures() {
                         border: 'none',
                         padding: '12px' 
                       }}
-                      formatter={(value, name) => [`${value.toFixed(0)} heures (${(value / totalHrs * 100).toFixed(1)}%)`, name]}
+                      formatter={(value, name) => [`${value} heures (${((Number(value) / totalHrs) * 100).toFixed(1)}%)`, name]}
                       separator=": "
                     />
                     <Legend 
@@ -964,7 +930,7 @@ export default function Heures() {
                         paddingTop: '16px',
                         fontSize: '13px'
                       }}
-                      formatter={(value, entry, index) => (
+                      formatter={(value, _entry, index) => (
                         <span style={{ color: index === 0 ? '#8884d8' : '#00C49F', fontWeight: 500 }}>
                           {value}
                         </span>
@@ -1112,7 +1078,7 @@ export default function Heures() {
                       {Object.keys(filteredData[0] || {}).slice(1).map((header, index) => {
                         const isNumeric = typeof filteredData[0][header] === 'number';
                         const total = isNumeric ? 
-                          filteredData.reduce((sum, row) => sum + (row[header] || 0), 0) : '';
+                          filteredData.reduce((sum, row) => sum + Number((row[header]) || 0), 0) : '';
                         
                         return (
                           <td key={index} style={{ 
@@ -1122,7 +1088,7 @@ export default function Heures() {
                                   header === 'nuit' ? '#FFBB28' : 
                                   header === 'ttl hrs' ? '#8884d8' : '#333'
                           }}>
-                            {isNumeric ? total.toFixed(2) : ''}
+                            {isNumeric ? total : ''}
                           </td>
                         );
                       })}

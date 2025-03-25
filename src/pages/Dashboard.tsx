@@ -5,15 +5,13 @@ import {
   Box,
   LinearProgress,
   IconButton,
-  Tooltip,
 } from '@mui/material';
 import EuroIcon from '@mui/icons-material/Euro';
 import {
   TrendingUp,
   TrendingDown,
   MoreVert,
-  AttachMoney,
-   People,
+  People,
   ShoppingCart,
   Assessment,
 } from '@mui/icons-material';
