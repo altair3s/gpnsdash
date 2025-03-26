@@ -174,7 +174,7 @@ export default function Heures() {
       endAngle: -20,
       min: 0,
       max: objectifHrs * (3/2), // Légèrement plus grand que l'objectif
-      splitNumber: 8,
+      splitNumber: 5,
       center: ['50%', '60%'],
       progress: {
         show: true,
