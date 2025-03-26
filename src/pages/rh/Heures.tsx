@@ -197,14 +197,14 @@ export default function Heures() {
         }
       },
       animation: true,
-      animationDurationUpdate: 5000,
+      animationDurationUpdate: 4000,
       animationEasingUpdate: 'bounceOut',
       axisLine: {
         lineStyle: {
           width: 10,
           color: [
-            [0.3, '#91cc75'],
-            [0.7, '#FFBB28'],
+            [2/3, '#91cc75'],
+            [7/9, '#FFBB28'],
             [1, '#FF8042']
           ]
         }
