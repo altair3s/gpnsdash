@@ -229,7 +229,7 @@ export default function Heures() {
       },
       axisLabel: {
         show: true,
-        distance: -15,
+        distance: -35,
         color: '#333',
         fontSize: 12,
         fontWeight: 'bold',
